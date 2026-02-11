@@ -1,4 +1,4 @@
-# n8n wi-fi validations
+# n8n Wi-Fi Validations
 n8n workflow to automate some Wi-Fi validations.
 
 These n8n Wi-Fi validation workflows have been presented at WLPC Phoenix 2026.
