@@ -1,0 +1,1827 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "44877470-c240-4bf0-9a33-8d7052514b3c",
+              "name": "validation_5_channel_width_status",
+              "value": "={{ $json[\"Channel Width\"] === '160 MHz' ? false : true }}",
+              "type": "boolean"
+            },
+            {
+              "id": "889685d8-926c-4ee2-87fa-6a709502f9a5",
+              "name": "validation_5_channel_width_description",
+              "value": "={{ \n  (() => {\n    const w = $json[\"Channel Width\"] || \"\";\n    if (!w) return \"INFO: Width not available.\";\n    return w === '160 MHz' \n      ? \"FAIL: A 160 MHz width detected. High DFS risk.\" \n      : (w === '80 MHz' ? \"WARNING: 80 MHz detected. Check CCI.\" : \"PASS: Standard \" + w + \" used.\");\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -368,
+        384
+      ],
+      "id": "6526bf25-3a11-4bb9-94c0-c18304cd4e29",
+      "name": "Validate 5 GHz Channel Width"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "44877470-c240-4bf0-9a33-8d7052514b3c",
+              "name": "validation_6_channel_width_status",
+              "value": "={{ $json[\"Channel Width\"] === '320 MHz' ? false : true }}",
+              "type": "boolean"
+            },
+            {
+              "id": "889685d8-926c-4ee2-87fa-6a709502f9a5",
+              "name": "validation_6_channel_width_description",
+              "value": "={{ \n  (() => {\n    const w = $json[\"Channel Width\"] || \"\";\n    if (!w) return \"INFO: Width not available.\";\n    return w === '320 MHz' \n      ? \"FAIL: 320 MHz width detected. Extreme contention risk.\" \n      : (w === '160 MHz' ? \"ADVICE: 160 MHz in use. Monitor channel plan depth.\" : \"PASS: Standard \" + w + \" used.\");\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -368,
+        576
+      ],
+      "id": "f76add93-ec33-43ca-bec5-39b447e57577",
+      "name": "Validate 6 GHz Channel Width",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_24_11b_rates_status",
+              "value": "={{ \n  (() => {\n    const raw = ($json[\"Supported Rate\"] || \"\").toString();\n    if (!raw) return true;\n    const rates = raw.split(\",\").map(r => r.trim());\n    return !rates.some(r => [\"1\", \"2\", \"5.5\", \"11\"].includes(r));\n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_24_11b_rates_description",
+              "value": "={{ \n  (() => {\n    const raw = ($json[\"Supported Rate\"] || \"\").toString();\n    if (!raw) return \"INFO: Rate data not available.\";\n    const rates = raw.split(\",\").map(r => r.trim());\n    const legacy = rates.filter(r => [\"1\", \"2\", \"5.5\", \"11\"].includes(r));\n    return legacy.length === 0 \n      ? \"PASS: No legacy rates enabled.\" \n      : \"FAIL: Legacy rates detected: \" + legacy.join(\", \");\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        304,
+        192
+      ],
+      "id": "717544d1-ff8b-4d0a-a6c8-bfb6aee62990",
+      "name": "802.11b Rates Validations",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_24_channel_width_status",
+              "value": "={{ \n  (() => {\n    const w = $json[\"Channel Width\"] || \"\";\n    return w === \"\" ? true : w === \"20 MHz\";\n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_24_channel_width_description",
+              "value": "={{ \n  (() => {\n    const w = $json[\"Channel Width\"] || \"\";\n    if (!w) return \"INFO: Width data not available.\";\n    return w === \"20 MHz\" ? \"PASS: 20 MHz in use.\" : \"FAIL: \" + w + \" detected in 2.4 GHz.\";\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        192
+      ],
+      "id": "621e9551-ed81-4045-bdb6-2b1a4556c28e",
+      "name": "2.4 GHz Channel Width Validations",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_24_11k_status",
+              "value": "={{ \n  (() => {\n    const k = $json[\"Neighbor Report\"] || \"\";\n    return k === \"\" ? true : k === \"Enabled\";\n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_24_11k_description",
+              "value": "={{ \n  (() => {\n    const k = $json[\"Neighbor Report\"] || \"\";\n    if (!k) return \"INFO: 11k status not found.\";\n    return k === \"Enabled\" ? \"PASS: 802.11k Enabled.\" : \"WARNING: 802.11k Disabled.\";\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        528,
+        192
+      ],
+      "id": "88d24c01-2ea5-4a0d-9e0f-cd144f950953",
+      "name": "Validation 2.4 GHz 802.11k Support",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_6_11k_status",
+              "value": "={{ \n  (() => {\n    const k = $json[\"Neighbor Report\"] || \"\";\n    return k === \"\" ? true : k === \"Enabled\";\n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_6_11k_description",
+              "value": "={{ \n  (() => {\n    const k = $json[\"Neighbor Report\"] || \"\";\n    if (!k) return \"INFO: 11k status not found.\";\n    return k === \"Enabled\" ? \"PASS: 802.11k Enabled.\" : \"WARNING: 802.11k Disabled.\";\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        576
+      ],
+      "id": "8ae6a53b-0650-4457-b4cc-1c90d04fdd56",
+      "name": "Validation 6 GHz 802.11k Support",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_5_11r_status",
+              "value": "={{ \n  (() => {\n    const r = $json[\"Fast Transition\"] || \"\";\n    return r === \"\" ? true : r.includes(\"Enabled\");\n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_5_11r_description",
+              "value": "={{ \n  (() => {\n    const r = $json[\"Fast Transition\"] || \"\";\n    if (!r) return \"INFO: 11r status not found.\";\n    return r.includes(\"Enabled\") ? \"PASS: 11r Enabled.\" : \"WARNING: 11r Disabled.\";\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        304,
+        384
+      ],
+      "id": "33975888-517a-46c8-b555-71e5d808b42f",
+      "name": "Validation 5 GHz 802.11r Support",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_24_11v_status",
+              "value": "={{ \n  (() => {\n    const v = $json[\"BSS Transition\"] || \"\";\n    return v === \"\" ? true : v !== \"Supported\";\n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_24_11v_description",
+              "value": "={{ \n  (() => {\n    const v = $json[\"BSS Transition\"] || \"\";\n    if (!v) return \"INFO: 11v status not found.\";\n    return v !== \"Supported\" ? \"PASS: 11v Disabled.\" : \"FAIL: 11v Enabled (not recommended).\";\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        976,
+        192
+      ],
+      "id": "65cc7e6d-a9e2-4acf-8d92-9f12e6267de1",
+      "name": "Validation 2.4 GHz 802.11v Support",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_5_11v_status",
+              "value": "={{ \n  (() => {\n    const v = $json[\"BSS Transition\"] || \"\";\n    return v === \"\" ? true : v !== \"Supported\";\n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_5_11v_description",
+              "value": "={{ \n  (() => {\n    const v = $json[\"BSS Transition\"] || \"\";\n    if (!v) return \"INFO: 11v status not found.\";\n    return v !== \"Supported\" ? \"PASS: 11v Disabled.\" : \"FAIL: 11v Enabled (not recommended).\";\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        528,
+        384
+      ],
+      "id": "7981c453-c776-4edf-896d-452fbb846ab7",
+      "name": "Validation 5 GHz 802.11v Support",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_24_11r_status",
+              "value": "={{ \n  (() => {\n    const r = $json[\"Fast Transition\"] || \"\";\n    return r === \"\" ? true : r.includes(\"Enabled\");\n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_24_11r_description",
+              "value": "={{ \n  (() => {\n    const r = $json[\"Fast Transition\"] || \"\";\n    if (!r) return \"INFO: 11r status not found.\";\n    return r.includes(\"Enabled\") ? \"PASS: 11r Enabled.\" : \"WARNING: 11r Disabled.\";\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        752,
+        192
+      ],
+      "id": "ec56f3cd-57c9-4c19-89f5-fc21a56ba577",
+      "name": "Validation 2.4 GHz 802.11r Support",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_6_11r_status",
+              "value": "={{ \n  (() => {\n    const r = $json[\"Fast Transition\"] || \"\";\n    return r === \"\" ? true : r.includes(\"Enabled\");\n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_6_11r_description",
+              "value": "={{ \n  (() => {\n    const r = $json[\"Fast Transition\"] || \"\";\n    if (!r) return \"INFO: 11r status not found.\";\n    return r.includes(\"Enabled\") ? \"PASS: 11r Enabled.\" : \"WARNING: 11r Disabled.\";\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        304,
+        576
+      ],
+      "id": "21dda745-7fe9-409d-86d5-98b6176553c5",
+      "name": "Validation 6 GHz 802.11r Support",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_5_11k_status",
+              "value": "={{ \n  (() => {\n    const k = $json[\"Neighbor Report\"] || \"\";\n    return k === \"\" ? true : k === \"Enabled\";\n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_5_11k_description",
+              "value": "={{ \n  (() => {\n    const k = $json[\"Neighbor Report\"] || \"\";\n    if (!k) return \"INFO: 11k status not found.\";\n    return k === \"Enabled\" ? \"PASS: 11k Enabled.\" : \"WARNING: 11k Disabled.\";\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        384
+      ],
+      "id": "1236379b-2e16-4130-813e-298750121b11",
+      "name": "Validation 5 GHz 802.11k Support",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_24_channels_status",
+              "value": "={{ \n  (() => {\n    const c = parseInt($json[\"Channel\"]);\n    if (isNaN(c)) return true;\n    return [1, 6, 11].includes(c);\n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_24_channels_description",
+              "value": "={{ \n  (() => {\n    const c = parseInt($json[\"Channel\"]);\n    if (isNaN(c)) return \"INFO: Channel data missing.\";\n    return [1, 6, 11].includes(c) \n      ? \"PASS: Standard channel \" + c \n      : \"FAIL: Non-standard channel \" + c;\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -144,
+        192
+      ],
+      "id": "b32ff4a3-e2ff-489c-9514-2493d4030b13",
+      "name": "2.4 GHz Channel Validations",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_6_11v_status",
+              "value": "={{ \n  (() => {\n    const v = $json[\"BSS Transition\"] || \"\";\n    return v === \"\" ? true : v === \"Supported\";\n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_6_11v_description",
+              "value": "={{ \n  (() => {\n    const v = $json[\"BSS Transition\"] || \"\";\n    if (!v) return \"INFO: 11v status not found.\";\n    return v === \"Supported\" ? \"PASS: 11v Supported.\" : \"WARNING: 11v Disabled (recommended for 6GHz).\";\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        528,
+        576
+      ],
+      "id": "ef7305f1-eef8-4d8a-b990-82bb08015919",
+      "name": "Validation 6 GHz 802.11v Support",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_24_txpower_status",
+              "value": "={{ \n  (() => {\n    const pwr = parseInt($json[\"Transmit Power\"]);\n    if (isNaN(pwr)) return true; \n    return pwr >= 4 && pwr <= 10;\n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_24_txpower_description",
+              "value": "={{ \n  (() => {\n    const pwr = parseInt($json[\"Transmit Power\"]);\n    if (isNaN(pwr)) return \"INFO: Transmit Power not advertised.\";\n    return (pwr >= 4 && pwr <= 10)\n      ? \"PASS: \" + pwr + \" dBm (7±3).\"\n      : \"FAIL: \" + pwr + \" dBm (Outside range).\";\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1200,
+        192
+      ],
+      "id": "dab7d2de-9f4d-4048-b781-1eefce480520",
+      "name": "Validation 2.4 GHz Tx Power",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_5_txpower_status",
+              "value": "={{ \n  (() => {\n    const pwr = parseInt($json[\"Transmit Power\"]);\n    if (isNaN(pwr)) return true;\n    return pwr >= 10 && pwr <= 16;\n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_5_txpower_description",
+              "value": "={{ \n  (() => {\n    const pwr = parseInt($json[\"Transmit Power\"]);\n    if (isNaN(pwr)) return \"INFO: Transmit Power not advertised.\";\n    return (pwr >= 10 && pwr <= 16)\n      ? \"PASS: \" + pwr + \" dBm (13±3).\"\n      : \"FAIL: \" + pwr + \" dBm (Outside range).\";\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        752,
+        384
+      ],
+      "id": "1960dda7-9902-41e5-9165-3f28000ed781",
+      "name": "Validation 5 GHz Tx Power",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_6_txpower_status",
+              "value": "={{ \n  (() => {\n    const pwr = parseInt($json[\"Transmit Power\"]);\n    if (isNaN(pwr)) return true;\n    return pwr >= 13 && pwr <= 19;\n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_6_txpower_description",
+              "value": "={{ \n  (() => {\n    const pwr = parseInt($json[\"Transmit Power\"]);\n    if (isNaN(pwr)) return \"INFO: Transmit Power not advertised.\";\n    return (pwr >= 13 && pwr <= 19)\n      ? \"PASS: \" + pwr + \" dBm (16±3).\"\n      : \"FAIL: \" + pwr + \" dBm (Outside range).\";\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        752,
+        576
+      ],
+      "id": "0d7ca8cc-4ef9-45c0-a96d-5a7f7504c115",
+      "name": "Validation 6 GHz Tx Power",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_24_channel_util_status",
+              "value": "={{ \n  (() => {\n    const raw = $json[\"Channel Utilization (%)\"];\n    if (raw === undefined || raw === null || raw === \"\") return true;\n    const util = parseFloat(raw);\n    return isNaN(util) ? true : util < 40;\n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_24_channel_util_description",
+              "value": "={{ \n  (() => {\n    const raw = $json[\"Channel Utilization (%)\"];\n    if (raw === undefined || raw === null || raw === \"\") return \"INFO: Channel Utilization data not available.\";\n    const util = parseFloat(raw);\n    if (isNaN(util)) return \"INFO: Channel Utilization value is not a valid number.\";\n    \n    return util < 40 \n      ? \"PASS: Channel Utilization is \" + util + \"% (Target < 40%).\" \n      : \"FAIL: High Channel Utilization detected (\" + util + \"%). Airtime is congested.\";\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1424,
+        192
+      ],
+      "id": "eb463a18-27b9-40ec-b7a9-53d189e0accb",
+      "name": "Validation 2.4 GHz Channel Utilization",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_5_channel_util_status",
+              "value": "={{ \n  (() => {\n    const raw = $json[\"Channel Utilization (%)\"];\n    if (raw === undefined || raw === null || raw === \"\") return true;\n    const util = parseFloat(raw);\n    return isNaN(util) ? true : util < 20;\n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_5_channel_util_description",
+              "value": "={{ \n  (() => {\n    const raw = $json[\"Channel Utilization (%)\"];\n    if (raw === undefined || raw === null || raw === \"\") return \"INFO: Channel Utilization data not available.\";\n    const util = parseFloat(raw);\n    if (isNaN(util)) return \"INFO: Channel Utilization value is not a valid number.\";\n    \n    return util < 20 \n      ? \"PASS: Channel Utilization is \" + util + \"% (Target < 20%).\" \n      : \"FAIL: High Channel Utilization detected (\" + util + \"%). QoS may be impacted.\";\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        976,
+        384
+      ],
+      "id": "3a5c55a4-95fb-40d1-8d9e-ccbe9b27712a",
+      "name": "Validation 5 GHz Channel Utilization",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_6_channel_util_status",
+              "value": "={{ \n  (() => {\n    const raw = $json[\"Channel Utilization (%)\"];\n    if (raw === undefined || raw === null || raw === \"\") return true;\n    const util = parseFloat(raw);\n    return isNaN(util) ? true : util < 20;\n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_6_channel_util_description",
+              "value": "={{ \n  (() => {\n    const raw = $json[\"Channel Utilization (%)\"];\n    if (raw === undefined || raw === null || raw === \"\") return \"INFO: Channel Utilization data not available.\";\n    const util = parseFloat(raw);\n    if (isNaN(util)) return \"INFO: Channel Utilization value is not a valid number.\";\n    \n    return util < 20 \n      ? \"PASS: Channel Utilization is \" + util + \"% (Target < 20%).\" \n      : \"FAIL: High Channel Utilization detected (\" + util + \"%). QoS may be impacted.\";\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        976,
+        576
+      ],
+      "id": "907047b1-c39f-4bc3-a843-63d25a9d39db",
+      "name": "Validation 6 GHz Channel Utilization",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_5_dfs_channel_used_status",
+              "value": "={{ \n  (() => {\n    // 1. Get user input country and AP reported country\n    const userCountry = $(\"Webhook POST\").item.json.body[\"Country\"];\n    const apCountry = ($json[\"Country Code\"] || \"\").toString().trim();\n    const chan = parseInt($json[\"Channel\"]);\n\n    if (isNaN(chan)) return false;\n\n    // 2. Define DFS lists\n    // FCC (US/CA) includes 144; ETSI (FR/UK) usually stops at 140\n    const fccDFS = [52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140, 144];\n    const etsiDFS = [52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 140];\n\n    // 3. Logic based on user selection\n    if ([\"USA\", \"Canada\"].includes(userCountry)) {\n      return fccDFS.includes(chan);\n    } \n    \n    if ([\"France\", \"UK\"].includes(userCountry)) {\n      return etsiDFS.includes(chan);\n    }\n\n    return false;\n  })()\n}}",
+              "type": "boolean"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1424,
+        384
+      ],
+      "id": "66a3ee2a-3ac7-4628-bb3a-531b12bfad3a",
+      "name": "Validation 5 GHz DFS Channel",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_5_primary_channel_place",
+              "value": "={{ \n  (() => {\n    const chan = parseInt($json[\"Channel\"]);\n    const width = $json[\"Channel Width\"] || \"\";\n    \n    // Default to 1 for 20 MHz or missing data\n    if (isNaN(chan) || width === \"20 MHz\" || !width) return 1;\n\n    // 1. Identify the start of the bonded block based on the specific channel\n    let blockStart = 0;\n    \n    if (chan >= 36 && chan <= 48) blockStart = 36;\n    else if (chan >= 52 && chan <= 64) blockStart = 52;\n    else if (chan >= 100 && chan <= 112) blockStart = 100;\n    else if (chan >= 116 && chan <= 128) blockStart = 116;\n    else if (chan >= 132 && chan <= 144) blockStart = 132;\n    else if (chan >= 149 && chan <= 161) blockStart = 149;\n    else return 1; // Fallback for edge cases\n\n    // 2. Calculate position based on 20 MHz jumps (4 channel numbers)\n    // Formula: ((Current - Start) / 4) + 1\n    const position = ((chan - blockStart) % (width.includes(\"80\") ? 16 : 8) / 4) + 1;\n    \n    return Math.floor(position);\n  })()\n}}",
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1648,
+        384
+      ],
+      "id": "84d329a7-1e7c-44ca-b5b7-8f9433ee4efa",
+      "name": "Validation Primary Channel 5 GHz",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_6_psc_channel_status",
+              "value": "={{ \n  (() => {\n    const chan = parseInt($json[\"Channel\"]);\n    const width = parseInt($json[\"Channel Width\"]);\n    if (isNaN(chan)) return true;\n    \n    // If width is 80, 160, or 320, we MUST be on a PSC\n    if (width >= 80) {\n      return (chan - 5) % 16 === 0;\n    }\n    // If 20 or 40 MHz, PSC is recommended but not strictly mandatory for connectivity\n    return true; \n  })()\n}}",
+              "type": "boolean"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1424,
+        576
+      ],
+      "id": "9c673670-3268-42a6-b2df-09fed3db733c",
+      "name": "Validation PSC Channel 6 GHz",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_6_primary_channel_status",
+              "value": "={{ \n  (() => {\n    const chan = parseInt($json[\"Channel\"]);\n    const width = $json[\"Channel Width\"] || \"\";\n    if (isNaN(chan) || width.includes(\"20 MHz\")) return 1;\n\n    // How many 20MHz channels in this block?\n    let channelsInBlock = 4; // Default for 80MHz\n    if (width.includes(\"40\")) channelsInBlock = 2;\n    if (width.includes(\"160\")) channelsInBlock = 8;\n    if (width.includes(\"320\")) channelsInBlock = 16;\n\n    // 6 GHz channels are 1, 5, 9, 13... \n    // This formula finds the index (1 to X) within the bonded block\n    const pos = (((chan - 1) / 4) % channelsInBlock) + 1;\n    return Math.floor(pos);\n  })()\n}}",
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1648,
+        576
+      ],
+      "id": "3b32ea96-7ed0-4d19-bc3b-b2314a326710",
+      "name": "Validation Primary Channel 6 GHz",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_24_wpa3_support_status",
+              "value": "={{ \n  (() => {\n    const sec = ($json[\"Security\"] || \"\").toString();\n    // Pass if it's Open\n    if (sec.includes(\"Open\") || sec === \"\") return true;\n    // Fail if both WPA2 and WPA3 are mentioned (Transition Mode)\n    if (sec.includes(\"WPA2\") && sec.includes(\"WPA3\")) return false;\n    // Otherwise, as long as it has WPA3, it's WPA3-Only\n    return sec.includes(\"WPA3\");\n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_24_wpa3_support_description",
+              "value": "={{ \n  (() => {\n    const sec = ($json[\"Security\"] || \"\").toString();\n    if (sec.includes(\"WPA2\") && sec.includes(\"WPA3\")) {\n       return \"FAIL: Transition Mode detected (WPA2/WPA3). WPA3-Only is recommended to prevent downgrade attacks.\";\n    }\n    if (sec.includes(\"WPA3\")) return \"PASS: WPA3-Only is enforced.\";\n    if (sec.includes(\"Open\")) return \"INFO: Open network.\";\n    return \"WARNING: WPA3 not detected. Network is using legacy \" + sec;\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1872,
+        192
+      ],
+      "id": "db01a457-bd71-4bfc-b926-a5258736c6c1",
+      "name": "Validation 2.4 GHz Security WPA3 Support",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_5_wpa3_support_status",
+              "value": "={{ \n  (() => {\n    const sec = ($json[\"Security\"] || \"\").toString();\n    // Pass if it's Open\n    if (sec.includes(\"Open\") || sec === \"\") return true;\n    // Fail if both WPA2 and WPA3 are mentioned (Transition Mode)\n    if (sec.includes(\"WPA2\") && sec.includes(\"WPA3\")) return false;\n    // Otherwise, as long as it has WPA3, it's WPA3-Only\n    return sec.includes(\"WPA3\");\n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_5_wpa3_support_description",
+              "value": "={{ \n  (() => {\n    const sec = ($json[\"Security\"] || \"\").toString();\n    if (sec.includes(\"WPA2\") && sec.includes(\"WPA3\")) {\n       return \"FAIL: Transition Mode detected (WPA2/WPA3). WPA3-Only is recommended to prevent downgrade attacks.\";\n    }\n    if (sec.includes(\"WPA3\")) return \"PASS: WPA3-Only is enforced.\";\n    if (sec.includes(\"Open\")) return \"INFO: Open network.\";\n    return \"WARNING: WPA3 not detected. Network is using legacy \" + sec;\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1872,
+        384
+      ],
+      "id": "b2a7069e-1f0c-42f5-8125-474918f2af10",
+      "name": "Validation 5 GHz Security WPA3 Support",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_6_wpa3_support_status",
+              "value": "={{ \n  (() => {\n    const sec = ($json[\"Security\"] || \"\").toString();\n    // 6 GHz requires WPA3 or OWE (Enhanced Open)\n    return sec.includes(\"WPA3\") || sec.includes(\"OWE\") || sec.includes(\"Enhanced Open\");\n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_5_wpa3_support_description",
+              "value": "={{ \n  (() => {\n    const sec = ($json[\"Security\"] || \"\").toString();\n    if (sec.includes(\"WPA3\") || sec.includes(\"OWE\") || sec.includes(\"Enhanced Open\")) {\n       return \"PASS: 6 GHz compliant security in use (\" + sec + \").\";\n    }\n    return \"FAIL: 6 GHz requires WPA3 or Enhanced Open. Detected: \" + (sec || \"Unknown\");\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1872,
+        576
+      ],
+      "id": "2018da7c-2fc9-4f37-86b6-acacecf508d4",
+      "name": "Validation 6 GHz Security WPA3 Support",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_24_client_count_status",
+              "value": "={{ \n  (() => {\n    const clients = parseInt($json[\"Station Count\"]);\n    if (isNaN(clients)) return true;\n    return clients <= 25; \n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_24_client_count_description",
+              "value": "={{ \n  (() => {\n    const clients = parseInt($json[\"Station Count\"]);\n    if (isNaN(clients)) return \"INFO: Station Count not advertised by AP.\";\n    return clients <= 25 \n      ? \"PASS: \" + clients + \" stations associated (Target <= 25).\" \n      : \"FAIL: High station count (\" + clients + \"). Airtime contention is likely.\";\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1648,
+        192
+      ],
+      "id": "9d205f89-cb98-4fbc-afef-b80e96ffbdba",
+      "name": "Validation 2.4 GHz Client Count",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_5_client_count_status",
+              "value": "={{ \n  (() => {\n    const clients = parseInt($json[\"Station Count\"]);\n    if (isNaN(clients)) return true;\n    return clients <= 40; \n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_5_client_count_description",
+              "value": "={{ \n  (() => {\n    const clients = parseInt($json[\"Station Count\"]);\n    if (isNaN(clients)) return \"INFO: Station Count not advertised by AP.\";\n    return clients <= 40 \n      ? \"PASS: \" + clients + \" stations associated (Target <= 40).\" \n      : \"WARNING: \" + clients + \" stations detected. High density may impact performance.\";\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1200,
+        384
+      ],
+      "id": "f9cce3ed-baad-4d8c-816f-68c2f0d3c994",
+      "name": "Validation 5 GHz Client Count",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dff51ff0-2f1c-4484-8192-fa74db92aa38",
+              "name": "validation_6_client_count_status",
+              "value": "={{ \n  (() => {\n    const clients = parseInt($json[\"Station Count\"]);\n    if (isNaN(clients)) return true;\n    return clients <= 40; \n  })()\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "fad8c446-2efd-4b95-adf5-450644b7c664",
+              "name": "validation_6_client_count_description",
+              "value": "={{ \n  (() => {\n    const clients = parseInt($json[\"Station Count\"]);\n    if (isNaN(clients)) return \"INFO: Station Count not advertised by AP.\";\n    return clients <= 40 \n      ? \"PASS: \" + clients + \" stations associated (Target <= 40).\" \n      : \"WARNING: \" + clients + \" stations detected. High density may impact performance.\";\n  })()\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1200,
+        576
+      ],
+      "id": "098d8efa-a827-42b4-bbb4-86734d4b5208",
+      "name": "Validation 6 GHz Client Count",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2096,
+        368
+      ],
+      "id": "d9181252-71ef-4448-8a97-6ea663b81220",
+      "name": "Merge",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const allBSSIDs = $input.all();\n\n// 1. Helper function to find the most common width in a band (the \"Mode\")\nfunction getIntendedWidth(band) {\n  const widthsInBand = allBSSIDs\n    .map(item => item.json)\n    .filter(j => j.Band === band)\n    .map(j => j[\"Channel Width\"]);\n  \n  if (widthsInBand.length === 0) return null;\n\n  const counts = widthsInBand.reduce((acc, w) => {\n    acc[w] = (acc[w] || 0) + 1;\n    return acc;\n  }, {});\n\n  // Return the width that appears most often (Majority Rule)\n  return Object.keys(counts).reduce((a, b) => counts[a] > counts[b] ? a : b);\n}\n\n// 2. Pre-calculate the majority widths for 5GHz and 6GHz\nconst majority5 = getIntendedWidth(\"5 GHz\");\nconst majority6 = getIntendedWidth(\"6 GHz\");\n\n// 3. Process the list\nreturn allBSSIDs.map(item => {\n  const current = item.json;\n  const band = current[\"Band\"];\n  const width = current[\"Channel Width\"];\n  \n  let isPass = true;\n  let message = \"\";\n\n  if (band === \"2.4 GHz\") {\n    // 2.4 GHz Rule: Must be 20 MHz\n    isPass = width === \"20 MHz\";\n    message = isPass \n      ? \"PASS: 20 MHz in use for 2.4 GHz.\" \n      : `FAIL: ${width} detected in 2.4 GHz. Only 20 MHz is supported for design stability.`;\n  } \n  else if (band === \"5 GHz\") {\n    // 5 GHz Rule: Must match the majority\n    isPass = width === majority5;\n    message = isPass \n      ? `PASS: Consistent ${width} width in 5 GHz.` \n      : `FAIL: Inconsistent 5 GHz Width. This AP is ${width}, but most are ${majority5}.`;\n  } \n  else if (band === \"6 GHz\") {\n    // 6 GHz Rule: Must match the majority\n    isPass = width === majority6;\n    message = isPass \n      ? `PASS: Consistent ${width} width in 6 GHz.` \n      : `FAIL: Inconsistent 6 GHz Width. This AP is ${width}, but most are ${majority6}.`;\n  }\n\n  current[\"validation_global_width_consistency_status\"] = isPass;\n  current[\"validation_global_width_consistency_description\"] = message;\n\n  return { json: current };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2320,
+        384
+      ],
+      "id": "966c1cc0-9fb2-4d0e-bb1a-a3eb44138cc6",
+      "name": "Check Channel Width Consistency",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const allBSSIDs = $input.all();\n\n// 1. Helper to find the majority position in a band\nfunction getIntendedPosition(band) {\n  const positions = allBSSIDs\n    .map(item => item.json)\n    .filter(j => j.Band === band)\n    .map(j => j.validation_5_primary_channel_place || j.validation_6_primary_channel_status);\n  \n  if (positions.length === 0) return null;\n\n  const counts = positions.reduce((acc, p) => {\n    acc[p] = (acc[p] || 0) + 1;\n    return acc;\n  }, {});\n\n  return Object.keys(counts).reduce((a, b) => counts[a] > counts[b] ? a : b);\n}\n\nconst target5Pos = getIntendedPosition(\"5 GHz\");\nconst target6Pos = getIntendedPosition(\"6 GHz\");\n\nreturn allBSSIDs.map(item => {\n  const current = item.json;\n  const band = current[\"Band\"];\n  const chan = parseInt(current[\"Channel\"]);\n  const width = current[\"Channel Width\"];\n  \n  // Get the position we calculated in the waterfall (Phase 1)\n  const myPos = (band === \"5 GHz\") ? current.validation_5_primary_channel_place : current.validation_6_primary_channel_status;\n\n  let isPass = true;\n  let message = \"\";\n\n  if (band === \"2.4 GHz\") {\n    isPass = true; // Rule: NA\n    message = \"INFO: Primary consistency not applicable to 2.4 GHz.\";\n  } \n  else if (band === \"5 GHz\") {\n    isPass = String(myPos) === String(target5Pos);\n    message = isPass \n      ? `PASS: Consistent primary position (${myPos}) in 5 GHz.` \n      : `FAIL: Primary Outlier! This AP is at position ${myPos}, but site majority is ${target5Pos}.`;\n  } \n  else if (band === \"6 GHz\") {\n    // 6 GHz Special Rule: If 80 MHz+, MUST be a PSC\n    if (parseInt(width) >= 80) {\n      const isPSC = (chan - 5) % 16 === 0;\n      isPass = isPSC;\n      message = isPass \n        ? `PASS: ${chan} is a valid PSC for ${width} operation.` \n        : `FAIL: Non-PSC channel (${chan}) used for ${width} channel. Clients will struggle to scan.`;\n    } else {\n      // For 20/40MHz in 6GHz, follow consistency\n      isPass = String(myPos) === String(target6Pos);\n      message = isPass \n        ? `PASS: Consistent primary position (${myPos}) in 6 GHz.` \n        : `FAIL: Inconsistent 6 GHz position (${myPos}). Majority is ${target6Pos}.`;\n    }\n  }\n\n  current[\"validation_global_primary_consistency_status\"] = isPass;\n  current[\"validation_global_primary_consistency_description\"] = message;\n\n  return { json: current };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2544,
+        384
+      ],
+      "id": "fad7792d-6469-49cc-ac84-b005d5decedf",
+      "name": "Check Primary Channel Consistency",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const allBSSIDs = $input.all();\n\n// 1. Determine if ANY 5 GHz BSSID is using a DFS channel\nconst anyDFSInUse = allBSSIDs.some(item => \n  item.json.Band === \"5 GHz\" && item.json.validation_5_dfs_channel_used_status === true\n);\n\nreturn allBSSIDs.map(item => {\n  const current = item.json;\n  const band = current[\"Band\"];\n  const isMyAPOnDFS = current.validation_5_dfs_channel_used_status === true;\n\n  let message = \"\";\n  let status = true; // Usually a \"PASS\" or \"INFO\" because DFS usage is actually good practice\n\n  if (band === \"2.4 GHz\" || band === \"6 GHz\") {\n    message = \"INFO: DFS not applicable to this band.\";\n    status = true;\n  } \n  else if (band === \"5 GHz\") {\n    if (anyDFSInUse) {\n      if (isMyAPOnDFS) {\n        message = \"PASS: DFS Channel in use.\";\n      } else {\n        message = \"INFO: This AP is on a non-DFS channel, but the site uses DFS elsewhere.\";\n      }\n    } else {\n      // No DFS used at all in 5GHz\n      status = false; // We flag this as a \"WARNING\" (false) because they are missing out on spectrum\n      message = \"WARNING: No DFS channels detected.\";\n    }\n  }\n\n  current[\"validation_global_dfs_summary_status\"] = status;\n  current[\"validation_global_dfs_summary_description\"] = message;\n\n  return { json: current };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2768,
+        384
+      ],
+      "id": "220431bb-9727-490b-b373-687a876cd2ca",
+      "name": "Check if DFS Channels are used",
+      "executeOnce": false,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const allBSSIDs = $input.all();\n\nreturn allBSSIDs.map(item => {\n  const current = item.json;\n  const myBSSID = current[\"BSSID\"];\n  const myChan = current[\"Channel\"];\n  const myBand = current[\"Band\"];\n  const mySignal = parseInt(current[\"Signal (dBm)\"]);\n\n  // 1. Filter the entire list to find \"Interferers\"\n  const interferers = allBSSIDs.filter(other => {\n    const o = other.json;\n    const oSignal = parseInt(o[\"Signal (dBm)\"]);\n    \n    return o[\"BSSID\"] !== myBSSID &&    // Don't count myself\n           o[\"Band\"] === myBand &&      // Must be same band\n           o[\"Channel\"] === myChan &&   // Must be same channel\n           oSignal >= -85;              // Must be loud enough to cause contention\n  });\n\n  const cciCount = interferers.length;\n  \n  // 2. Determine Status and Description\n  // In Wi-Fi terms, CCI of 0 is a PASS. 1 or more is a FAIL/WARNING.\n  const isPass = cciCount === 0;\n  \n  current[\"validation_global_cci_status\"] = isPass;\n  current[\"validation_global_cci_count\"] = cciCount;\n  current[\"validation_global_cci_description\"] = isPass\n    ? `PASS: No other APs detected on Channel ${myChan} above -85 dBm.`\n    : `FAIL: ${cciCount} other AP(s) detected on Channel ${myChan} with signal >= -85 dBm. Contention is likely.`;\n\n  return { json: current };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2992,
+        384
+      ],
+      "id": "34e09cc0-e72a-4b6c-a56f-0bd63b0a9e83",
+      "name": "CCI Validations"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "805cdadf-1294-40f2-b80c-c2037b5f5d0a",
+              "name": "validation_5_min_basic_rate_status",
+              "value": "={{ \n  (() => {\n    const rate = parseFloat($json[\"Min Basic Rate (Mbps)\"]);\n    if (isNaN(rate)) return true; // Safety for missing data\n    return rate >= 12; \n  })()\n}}",
+              "type": "string"
+            },
+            {
+              "id": "9ad97198-28ff-446e-9d85-2859e6d5054a",
+              "name": "validation_5_min_basic_rate_description",
+              "value": "={{    (() => {     const rate = parseFloat($json[\"Min Basic Rate (Mbps)\"]);     if (isNaN(rate)) return \"INFO: Min Basic Rate not advertised by AP.\";          if (rate >= 24) {       return \"PASS: High Density rate (\" + rate + \" Mbps) in use.\";     } else if (rate >= 12) {       return \"PASS: Standard rate (\" + rate + \" Mbps) in use.\";     } else {       return \"FAIL: Low rate (\" + rate + \" Mbps) detected. 12 Mbs is recommended.\";     }   })() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -144,
+        384
+      ],
+      "id": "dc1a14c1-6399-46e4-8af3-7bae687f2b46",
+      "name": "5 GHz MBR Validations",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "805cdadf-1294-40f2-b80c-c2037b5f5d0a",
+              "name": "validation_6_min_basic_rate_status",
+              "value": "={{ \n  (() => {\n    const rate = parseFloat($json[\"Min Basic Rate (Mbps)\"]);\n    if (isNaN(rate)) return true; // Safety for missing data\n    return rate >= 12; \n  })()\n}}",
+              "type": "string"
+            },
+            {
+              "id": "9ad97198-28ff-446e-9d85-2859e6d5054a",
+              "name": "validation_6_min_basic_rate_description",
+              "value": "={{    (() => {     const rate = parseFloat($json[\"Min Basic Rate (Mbps)\"]);     if (isNaN(rate)) return \"INFO: Min Basic Rate not advertised by AP.\";          if (rate >= 24) {       return \"PASS: High Density rate (\" + rate + \" Mbps) in use.\";     } else if (rate >= 12) {       return \"PASS: Standard rate (\" + rate + \" Mbps) in use.\";     } else {       return \"FAIL: Low rate (\" + rate + \" Mbps) detected. 12 Mbps is recommended.\";     }   })() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -144,
+        576
+      ],
+      "id": "ee3408f3-9efb-4baa-86b7-22efde30f1e0",
+      "name": "6 GHz MBR Validations",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const allBSSIDs = $input.all().map(i => i.json);\nconst formSSID = $(\"Webhook POST\").item.json.body[\"Target SSID\"];\n\nconst allKeys = new Set();\nallBSSIDs.forEach(b => Object.keys(b).forEach(k => allKeys.add(k)));\nconst keyList = Array.from(allKeys);\n\nconst bandData = {\n  \"2.4 GHz\": allBSSIDs.filter(b => b.Band === \"2.4 GHz\"),\n  \"5 GHz\": allBSSIDs.filter(b => b.Band === \"5 GHz\"),\n  \"6 GHz\": allBSSIDs.filter(b => b.Band === \"6 GHz\")\n};\n\nconst validationSpecs = [\n  { id: \"01\", name: \"2.4 GHz Channel Plan (1, 6, 11)\", field: \"channels_status\", desc: \"Verification of non-overlapping channels (1, 6, 11) to ensure design stability and minimize interference.\" },\n  { id: \"02\", name: \"Channel Width Compliance\", field: \"width_consistency_status\", desc: \"Ensuring channel widths follow best practices: 20MHz for 2.4GHz, 20/40MHz for 5GHz, and PSC compliance for 6GHz.\" },\n  { id: \"03\", name: \"Minimum Basic Rate\", field: \"min_basic_rate_status\", desc: \"Checking if the management frame rate is high enough to reduce overhead and improve roaming.\" },\n  { id: \"04\", name: \"Legacy Rates (802.11b)\", field: \"11b_rates_status\", desc: \"Detecting if 1, 2, 5.5, or 11 Mbps rates are active, which can significantly degrade airtime efficiency.\" },\n  { id: \"05\", name: \"Fast Roaming (802.11k/r/v)\", field: \"11k_status\", desc: \"Verification of Neighbor Reports, Fast Transition, and BSS Transition support for seamless client movement.\" },\n  { id: \"06\", name: \"Transmit Power Alignment\", field: \"txpower_status\", desc: \"Checking if TX power levels are balanced across bands to prevent 'sticky' clients and asymmetric links.\" },\n  { id: \"07\", name: \"Co-Channel Interference\", field: \"cci_status\", desc: \"Detection of other APs on the same channel with signal levels above -85 dBm causing contention.\" },\n  { id: \"08\", name: \"Primary Channel Consistency\", field: \"primary_consistency_status\", desc: \"Checking if the primary 20MHz channel is consistent across the site to avoid Overlapping BSS (OBSS) issues.\" },\n  { id: \"09\", name: \"DFS Spectrum Usage\", field: \"dfs_channel_used_status\", desc: \"Evaluating if the site is leveraging DFS channels to increase available spectrum capacity.\" },\n  { id: \"10\", name: \"Security Compliance (WPA3)\", field: \"wpa3_support_status\", desc: \"Ensuring modern security protocols are enforced and detecting risky transition modes.\" }\n];\n\nconst reportValidations = validationSpecs.map(spec => {\n  const row = { id: spec.id, name: spec.name, logic: spec.desc, bandResults: {} };\n  Object.keys(bandData).forEach(band => {\n    const bandAPs = bandData[band];\n    if (bandAPs.length === 0) {\n      row.bandResults[band] = { emoji: '⚪', label: 'N/A', breakdown: [] };\n      return;\n    }\n    const bandKeyword = band.split(' ')[0].replace('.', '');\n    const actualField = keyList.find(k => k.includes(spec.field) && (k.includes(bandKeyword) || k.includes('global')));\n\n    const breakdown = bandAPs.map(ap => {\n        let isPass = false;\n        let description = \"N/A\";\n        if (spec.id === \"01\" && (band === \"5 GHz\" || band === \"6 GHz\")) {\n            isPass = true;\n            description = \"Valid \" + band + \" channel usage.\";\n        } else if (actualField) {\n            isPass = ap[actualField] === true || ap[actualField] === \"true\";\n            description = ap[actualField.replace('_status', '_description')] || \"Validated.\";\n        }\n        return { \n          bssid: ap.BSSID || \"Unknown\", \n          name: ap[\"AP Name\"] || \"Unknown AP\",\n          channel: ap.Channel || \"N/A\", \n          width: ap[\"Channel Width\"] || \"N/A\",\n          util: ap[\"Channel Utilization (%)\"] || \"--\",\n          clients: ap[\"Station Count\"] || \"0\",\n          pass: isPass, \n          description: description \n        };\n    });\n\n    let status = { label: 'PASS' };\n    if (spec.id === \"01\" && (band === \"5 GHz\" || band === \"6 GHz\")) {\n        status = { label: 'PASS' };\n    } else if (actualField) {\n        const passCount = breakdown.filter(b => b.pass).length;\n        if (passCount === breakdown.length) status = { label: 'PASS' };\n        else if (passCount === 0) status = { label: 'FAIL' };\n        else status = { label: 'WARNING' };\n    }\n    row.bandResults[band] = { ...status, breakdown };\n  });\n\n  // Calculate Overall Status for the Accordion Badge\n  const statuses = Object.values(row.bandResults).map(r => r.label);\n  if (statuses.includes('FAIL')) row.overallStatus = 'FAIL';\n  else if (statuses.includes('WARNING')) row.overallStatus = 'WARNING';\n  else row.overallStatus = 'PASS';\n\n  return row;\n});\n\nlet tCheck = 0; let tPass = 0;\nallBSSIDs.forEach(b => { Object.keys(b).forEach(k => { if (k.endsWith('_status')) { tCheck++; if (b[k] === true || b[k] === \"true\") tPass++; } }); });\n\nreturn {\n  global: { ssid: formSSID, security: allBSSIDs[0][\"Security\"] || \"Unknown\", healthScore: Math.round((tPass / tCheck) * 100) },\n  validations: reportValidations\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3216,
+        384
+      ],
+      "id": "0b7f568a-4eb0-428b-ae73-709cb8cb8812",
+      "name": "Summary"
+    },
+    {
+      "parameters": {
+        "jsCode": "const { global, validations } = $json;\n\nlet scoreColor = 'var(--danger-color)'; \nif (global.healthScore > 75) scoreColor = 'var(--success-color)';\nelse if (global.healthScore >= 50) scoreColor = 'var(--warning-color)';\n\nconst html = `\n<!DOCTYPE html>\n<html lang=\"en\" data-theme=\"dark\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Wi-Fi Audit Dashboard</title>\n    <link href=\"https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap\" rel=\"stylesheet\">\n    <style>\n        :root {\n            --primary-accent: #068fff; --success-color: #26c485; --danger-color: #fb4b4e; --warning-color: #f2c63d;\n            --bg-color: #151521; --card-bg: #1e1e2d; --card-border: #2b2b40; --text-main: #eeeeee;\n            --text-sub: #cccccc; --text-muted-color: #888899; --border-subtle: #333344;\n            --table-header-bg: #1f202a; --table-row-border: rgba(255, 255, 255, 0.03);\n            --summary-box-bg: rgba(255, 255, 255, 0.05); --tab-border: #333344; --shadow: 0 10px 30px rgba(0,0,0,0.5);\n        }\n        [data-theme=\"light\"] {\n            --bg-color: #f4f7fa; --card-bg: #ffffff; --card-border: #e2e8f0; --text-main: #1a202c;\n            --text-sub: #4a5568; --text-muted-color: #718096; --border-subtle: #cbd5e0;\n            --table-header-bg: #f8fafc; --table-row-border: rgba(0, 0, 0, 0.05);\n            --summary-box-bg: rgba(0, 0, 0, 0.02); --tab-border: #e2e8f0; --shadow: 0 4px 15px rgba(0,0,0,0.05);\n        }\n        body { font-family: 'Open Sans', sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; transition: all 0.3s ease; }\n        .container { width: 95%; margin: 0 auto; padding-bottom: 60px; }\n        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; margin-top: 40px; }\n        .header-left h1 { margin: 0; font-size: 2.2em; }\n        .header-left p { margin: 0;}\n        .score-display { font-size: 3.2em; font-weight: bold; color: ${scoreColor}; }\n        \n        .accordion-item { background: var(--card-bg); border-radius: 12px; border: 1px solid var(--card-border); box-shadow: var(--shadow); margin-bottom: 20px; overflow: hidden; }\n        .accordion-summary { display: flex; align-items: center; padding: 20px; cursor: pointer; font-weight: 600; text-transform: uppercase; font-size: 0.85em; letter-spacing: 0.05em; }\n        .accordion-summary:hover { background-color: rgba(128, 128, 128, 0.05); }\n        .arrow-icon { margin-right: 15px; transition: transform 0.2s; }\n        .accordion-item.open .arrow-icon { transform: rotate(90deg); }\n        .status-text { padding: 4px 12px; border-radius: 6px; font-size: 0.7em; font-weight: 800; margin-left: auto; }\n        .status-PASS { background-color: var(--success-color); color: #151521; }\n        .status-FAIL { background-color: var(--danger-color); color: #fff; }\n        .status-WARNING { background-color: var(--warning-color); color: #151521; }\n\n        .accordion-details { padding: 0 24px; max-height: 0; overflow: hidden; transition: all 0.3s ease-out; }\n        .accordion-item.open .accordion-details { padding: 0 24px 24px 24px; max-height: 5000px; }\n\n        .summary-box { margin: 20px 0; padding: 15px; border-left: 4px solid var(--primary-accent); background: var(--summary-box-bg); border-radius: 4px; }\n        .summary-label { display: block; font-size: 0.7em; font-weight: 800; opacity: 0.6; margin-bottom: 5px; }\n\n        .tabs { display: flex; border-bottom: 1px solid var(--tab-border); margin-bottom: 15px; }\n        .tab-button { background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 20px; color: var(--text-sub); cursor: pointer; font-weight: 600; }\n        .tab-button.active { color: var(--primary-accent); border-bottom-color: var(--primary-accent); }\n        .tab-content { display: none; }\n        .tab-content.active { display: block; }\n\n        table { width: 100%; border-collapse: collapse; font-size: 0.85em; }\n        th { text-align: left; padding: 12px; border-bottom: 1px solid var(--border-subtle); color: var(--text-muted-color); font-size: 0.75em; cursor: pointer; }\n        td { padding: 12px; border-bottom: 1px solid var(--table-row-border); }\n        .badge { background: rgba(128, 128, 128, 0.1); padding: 2px 6px; border-radius: 4px; font-family: monospace; }\n        .text-success { color: var(--success-color); }\n        .text-danger { color: var(--danger-color); }\n        .text-warning { color: var(--warning-color); }\n\n        footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border-subtle); text-align: center; color: var(--text-muted-color); font-size: 0.8em; }\n        .theme-toggle { position: fixed; bottom: 20px; left: 20px; width: 44px; height: 44px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--card-border); cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }\n        .theme-toggle svg { width: 20px; fill: var(--text-main); }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <header>\n            <div class=\"header-left\">\n                <h1>Wi-Fi Validations</h1>\n                <p>SSID: <strong>${global.ssid}</strong></p>\n            </div>\n            <div class=\"score-display\">${global.healthScore}%</div>\n        </header>\n\n        ${validations.map((v, index) => `\n            <div class=\"accordion-item ${index === 0 ? 'open' : ''}\">\n                <div class=\"accordion-summary\" onclick=\"this.parentElement.classList.toggle('open')\">\n                    <span class=\"arrow-icon\">▶</span>\n                    ${v.name}\n                    <span class=\"status-text status-${v.overallStatus}\">${v.overallStatus}</span>\n                </div>\n                <div class=\"accordion-details\">\n                    <div class=\"summary-box\">\n                        <span class=\"summary-label\">Validation Description</span>\n                        ${v.logic}\n                    </div>\n                    \n                    <div class=\"tabs\">\n                        ${['2.4 GHz', '5 GHz', '6 GHz'].map(band => v.bandResults[band].label !== 'N/A' ? `\n                            <button class=\"tab-button ${band === Object.keys(v.bandResults).find(k => v.bandResults[k].label !== 'N/A') ? 'active' : ''}\" \n                                    onclick=\"switchTab(event, 'content-${v.id}-${band.replace(/\\\\s/g, '')}')\">${band}</button>\n                        ` : '').join('')}\n                    </div>\n\n                    ${['2.4 GHz', '5 GHz', '6 GHz'].map(band => `\n                        <div id=\"content-${v.id}-${band.replace(/\\\\s/g, '')}\" class=\"tab-content ${band === Object.keys(v.bandResults).find(k => v.bandResults[k].label !== 'N/A') ? 'active' : ''}\">\n                            <table>\n                                <thead>\n                                    <tr>\n                                        <th onclick=\"handleSort(this, 0)\">BSSID</th>\n                                        <th onclick=\"handleSort(this, 1)\">AP Name</th>\n                                        <th onclick=\"handleSort(this, 2)\">CH</th>\n                                        <th onclick=\"handleSort(this, 3)\">Util</th>\n                                        <th onclick=\"handleSort(this, 4)\">Clients</th>\n                                        <th onclick=\"handleSort(this, 5)\">Result</th>\n                                    </tr>\n                                </thead>\n                                <tbody>\n                                    ${v.bandResults[band].breakdown.map(ap => `\n                                        <tr>\n                                            <td><span class=\"badge\">${ap.bssid}</span></td>\n                                            <td>${ap.name}</td>\n                                            <td>${ap.channel}</td>\n                                            <td>${ap.util}%</td>\n                                            <td>${ap.clients}</td>\n                                            <td class=\"${ap.pass ? 'text-success' : 'text-danger'}\">${ap.pass ? 'PASS' : 'FAIL'}</td>\n                                        </tr>\n                                    `).join('')}\n                                </tbody>\n                            </table>\n                        </div>\n                    `).join('')}\n                </div>\n            </div>\n        `).join('')}\n\n        <footer>\n            <p>Created by <strong>François Vergès</strong> | Inspired by the <strong>WLAN Pros Checklist</strong></p>\n        </footer>\n    </div>\n\n    <button class=\"theme-toggle\" id=\"themeToggle\">\n        <svg viewBox=\"0 0 24 24\"><path d=\"M12 7a5 5 0 100 10 5 5 0 000-10zM2 13h2a1 1 0 100-2H2a1 1 0 100 2zm18 0h2a1 1 0 100-2h-2a1 1 0 100 2zM11 2v2a1 1 0 100 2V2a1 1 0 100-2zm0 18v2a1 1 0 100 2v-2a1 1 0 100-2zM5.99 4.58a1 1 0 10-1.41 1.41l1.41-1.41zm12.02 12.02a1 1 0 10-1.41 1.41l1.41-1.41zm-12.02 0l-1.41-1.41a1 1 0 101.41 1.41zm12.02-12.02l-1.41-1.41a1 1 0 101.41 1.41z\"/></svg>\n    </button>\n\n    <script>\n        function switchTab(event, contentId) {\n            const container = event.target.closest('.accordion-details');\n            container.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));\n            container.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));\n            event.target.classList.add('active');\n            document.getElementById(contentId).classList.add('active');\n        }\n\n        const themeToggle = document.getElementById('themeToggle');\n        themeToggle.addEventListener('click', () => {\n            const current = document.documentElement.getAttribute('data-theme');\n            document.documentElement.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');\n        });\n\n        function handleSort(th, col) {\n            const table = th.closest('table');\n            const tbody = table.querySelector('tbody');\n            const rows = Array.from(tbody.rows);\n            const isAsc = th.dataset.dir !== 'asc';\n            rows.sort((a, b) => a.cells[col].innerText.localeCompare(b.cells[col].innerText, undefined, {numeric: true}));\n            if (!isAsc) rows.reverse();\n            th.dataset.dir = isAsc ? 'asc' : 'desc';\n            rows.forEach(r => tbody.appendChild(r));\n        }\n    </script>\n</body>\n</html>\n`;\nreturn { html };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3440,
+        384
+      ],
+      "id": "2d1bdff7-4d2d-4792-9b10-9acd7febafea",
+      "name": "Report Creation (HTML)"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        3664,
+        384
+      ],
+      "id": "75e68296-2444-41a2-b25d-47759b3ec878",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "wifi-audit",
+        "responseMode": "responseNode",
+        "options": {
+          "binaryPropertyName": "WiFi_Explorer_CSV_Export"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1264,
+        384
+      ],
+      "id": "f4d78bd9-85ca-4cd5-be59-ce0b4e0d8415",
+      "name": "Webhook POST",
+      "webhookId": "0d9e4e61-25c3-433e-9818-1693910e2485"
+    },
+    {
+      "parameters": {
+        "path": "wifi-audit",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1264,
+        -32
+      ],
+      "id": "b63721d7-bf0d-4189-87b4-e91844bcec2c",
+      "name": "Webhook GET",
+      "webhookId": "51a5582f-f7ae-4fb5-abe4-b0d918b2bf53"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=<html>\n<head>\n    <link href=\"https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap\" rel=\"stylesheet\">\n    <style>\n        body { font-family: 'Open Sans', sans-serif; background: #151521; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }\n        .card { background: #1e1e2d; padding: 40px; border-radius: 12px; border: 1px solid #2b2b40; width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }\n        img { display: block; margin: 0 auto 20px; max-width: 200px; }\n        h2 { text-align: center; color: #f2c63d; margin-bottom: 30px; }\n        label { display: block; font-size: 12px; color: #a9a9b3; margin-top: 15px; text-transform: uppercase; }\n        input, select { width: 100%; padding: 12px; margin-top: 5px; border-radius: 6px; border: 1px solid #3f3f5a; background: #2b2b40; color: white; box-sizing: border-box; }\n        button { width: 100%; padding: 14px; margin-top: 30px; background: #068fff; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; text-transform: uppercase; }\n        button:hover { background: #0076d6; }\n        footer { margin-top: 10px; padding-top: 10px; border-top: 1px solid #333344; text-align: center; color: #888899; font-size: 0.8em; }\n    </style>\n</head>\n<body>\n    <div class=\"card\">\n        <h2>Wi-Fi Validations</h2>\n        <form action=\"/webhook/wifi-audit\" method=\"POST\" enctype=\"multipart/form-data\">\n            <label>WiFi Explorer CSV</label>\n            <input type=\"file\" name=\"WiFi_Explorer_CSV_Export\" required>\n            <label>Target SSID</label>\n            <input type=\"text\" name=\"Target SSID\" placeholder=\"e.g. Starbucks WiFi\" required>\n            <label>Country</label>\n            <select name=\"Country\">\n                <option value=\"USA\">USA</option>\n                <option value=\"Canada\">Canada</option>\n                <option value=\"France\">France</option>\n                <option value=\"UK\">UK</option>\n            </select>\n            <button type=“submit”>Submit</button>\n        </form>\n        <footer>\n            <p>v0.2</p>\n        </footer>\n    </div>\n</body>\n</html>",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -1040,
+        -32
+      ],
+      "id": "360d5702-c97f-415d-8a35-85d16d5b8103",
+      "name": "Serve HTML Form"
+    },
+    {
+      "parameters": {
+        "binaryPropertyName": "WiFi_Explorer_CSV_Export0",
+        "options": {
+          "headerRow": true
+        }
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -1040,
+        384
+      ],
+      "id": "3b05c473-e37c-4ada-825b-8e62bd863341",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5eace1df-7a8d-4133-a70b-6355681edd37",
+              "leftValue": "={{ $json['Network Name'] }}",
+              "rightValue": "={{ $(\"Webhook POST\").item.json.body[\"Target SSID\"] }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -816,
+        384
+      ],
+      "id": "df0f0c53-99b7-4ccd-a4f8-dd37c2f09605",
+      "name": "Only Keep Relevant SSID1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Band }}",
+                    "rightValue": "2.4 GHz",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "252336dd-c0ee-4784-876a-497467655690"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "2.4 GHz BSSIDs"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c4e1fe42-72c6-4fcc-98f7-9666349df706",
+                    "leftValue": "={{ $json.Band }}",
+                    "rightValue": "5 GHz",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "5 GHz BSSIDs"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6754f5d0-c9cc-4067-b64f-ae6b61897757",
+                    "leftValue": "={{ $json.Band }}",
+                    "rightValue": "6 GHz",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "6 GHz BSSIDs"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -592,
+        368
+      ],
+      "id": "f787080b-ae6f-417b-a188-d3ec2257e81a",
+      "name": "Switch1"
+    }
+  ],
+  "connections": {
+    "Validate 5 GHz Channel Width": {
+      "main": [
+        [
+          {
+            "node": "5 GHz MBR Validations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate 6 GHz Channel Width": {
+      "main": [
+        [
+          {
+            "node": "6 GHz MBR Validations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "802.11b Rates Validations": {
+      "main": [
+        [
+          {
+            "node": "Validation 2.4 GHz 802.11k Support",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2.4 GHz Channel Width Validations": {
+      "main": [
+        [
+          {
+            "node": "802.11b Rates Validations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation 2.4 GHz 802.11k Support": {
+      "main": [
+        [
+          {
+            "node": "Validation 2.4 GHz 802.11r Support",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation 6 GHz 802.11k Support": {
+      "main": [
+        [
+          {
+            "node": "Validation 6 GHz 802.11r Support",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation 5 GHz 802.11r Support": {
+      "main": [
+        [
+          {
+            "node": "Validation 5 GHz 802.11v Support",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation 2.4 GHz 802.11v Support": {
+      "main": [
+        [
+          {
+            "node": "Validation 2.4 GHz Tx Power",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation 5 GHz 802.11v Support": {
+      "main": [
+        [
+          {
+            "node": "Validation 5 GHz Tx Power",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation 2.4 GHz 802.11r Support": {
+      "main": [
+        [
+          {
+            "node": "Validation 2.4 GHz 802.11v Support",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation 6 GHz 802.11r Support": {
+      "main": [
+        [
+          {
+            "node": "Validation 6 GHz 802.11v Support",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation 5 GHz 802.11k Support": {
+      "main": [
+        [
+          {
+            "node": "Validation 5 GHz 802.11r Support",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2.4 GHz Channel Validations": {
+      "main": [
+        [
+          {
+            "node": "2.4 GHz Channel Width Validations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation 6 GHz 802.11v Support": {
+      "main": [
+        [
+          {
+            "node": "Validation 6 GHz Tx Power",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation 2.4 GHz Tx Power": {
+      "main": [
+        [
+          {
+            "node": "Validation 2.4 GHz Channel Utilization",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation 5 GHz Tx Power": {
+      "main": [
+        [
+          {
+            "node": "Validation 5 GHz Channel Utilization",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation 6 GHz Tx Power": {
+      "main": [
+        [
+          {
+            "node": "Validation 6 GHz Channel Utilization",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation 2.4 GHz Channel Utilization": {
+      "main": [
+        [
+          {
+            "node": "Validation 2.4 GHz Client Count",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation 5 GHz Channel Utilization": {
+      "main": [
+        [
+          {
+            "node": "Validation 5 GHz Client Count",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation 6 GHz Channel Utilization": {
+      "main": [
+        [
+          {
+            "node": "Validation 6 GHz Client Count",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation 5 GHz DFS Channel": {
+      "main": [
+        [
+          {
+            "node": "Validation Primary Channel 5 GHz",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation Primary Channel 5 GHz": {
+      "main": [
+        [
+          {
+            "node": "Validation 5 GHz Security WPA3 Support",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation PSC Channel 6 GHz": {
+      "main": [
+        [
+          {
+            "node": "Validation Primary Channel 6 GHz",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation Primary Channel 6 GHz": {
+      "main": [
+        [
+          {
+            "node": "Validation 6 GHz Security WPA3 Support",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation 2.4 GHz Security WPA3 Support": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation 5 GHz Security WPA3 Support": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Validation 6 GHz Security WPA3 Support": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Validation 2.4 GHz Client Count": {
+      "main": [
+        [
+          {
+            "node": "Validation 2.4 GHz Security WPA3 Support",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation 5 GHz Client Count": {
+      "main": [
+        [
+          {
+            "node": "Validation 5 GHz DFS Channel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation 6 GHz Client Count": {
+      "main": [
+        [
+          {
+            "node": "Validation PSC Channel 6 GHz",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Check Channel Width Consistency",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Channel Width Consistency": {
+      "main": [
+        [
+          {
+            "node": "Check Primary Channel Consistency",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Primary Channel Consistency": {
+      "main": [
+        [
+          {
+            "node": "Check if DFS Channels are used",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if DFS Channels are used": {
+      "main": [
+        [
+          {
+            "node": "CCI Validations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CCI Validations": {
+      "main": [
+        [
+          {
+            "node": "Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "5 GHz MBR Validations": {
+      "main": [
+        [
+          {
+            "node": "Validation 5 GHz 802.11k Support",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "6 GHz MBR Validations": {
+      "main": [
+        [
+          {
+            "node": "Validation 6 GHz 802.11k Support",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summary": {
+      "main": [
+        [
+          {
+            "node": "Report Creation (HTML)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Report Creation (HTML)": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook POST": {
+      "main": [
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook GET": {
+      "main": [
+        [
+          {
+            "node": "Serve HTML Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "Only Keep Relevant SSID1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Only Keep Relevant SSID1": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "2.4 GHz Channel Validations",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Validate 5 GHz Channel Width",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Validate 6 GHz Channel Width",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {
+    "Webhook POST": [
+      {
+        "headers": {
+          "host": "n8n.srv1153239.hstgr.cloud",
+          "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.2 Safari/605.1.15",
+          "content-length": "7279",
+          "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+          "accept-encoding": "gzip, deflate, br",
+          "accept-language": "en-CA,en-US;q=0.9,en;q=0.8",
+          "content-type": "multipart/form-data; boundary=----WebKitFormBoundarym33tRRIhWK17q9Jn",
+          "origin": "null",
+          "priority": "u=0, i",
+          "referer": "https://n8n.srv1153239.hstgr.cloud/webhook/wifi-audit",
+          "sec-fetch-dest": "document",
+          "sec-fetch-mode": "navigate",
+          "sec-fetch-site": "cross-site",
+          "x-forwarded-for": "86.48.14.215",
+          "x-forwarded-host": "n8n.srv1153239.hstgr.cloud",
+          "x-forwarded-port": "443",
+          "x-forwarded-proto": "https",
+          "x-forwarded-server": "5fd012d3aef1",
+          "x-real-ip": "86.48.14.215"
+        },
+        "params": {},
+        "query": {},
+        "body": {
+          "Target SSID": "SemFio BYOD",
+          "Country": "Canada"
+        },
+        "webhookUrl": "https://n8n.srv1153239.hstgr.cloud/webhook/wifi-audit",
+        "executionMode": "production"
+      }
+    ]
+  },
+  "meta": {
+    "instanceId": "3470a396f4a178a874ebcde7aea77bcfcbf49671b6fb891e4ebd4c17d64b7d97"
+  }
+}
