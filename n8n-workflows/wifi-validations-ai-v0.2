@@ -1,0 +1,357 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "wifi-validations",
+        "responseMode": "responseNode",
+        "options": {
+          "binaryPropertyName": "WiFi_Explorer_CSV_Export"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1264,
+        432
+      ],
+      "id": "6b167845-4d06-4d94-bb47-4f9550d7259c",
+      "name": "Webhook POST",
+      "webhookId": "5d733477-1920-4401-9346-622b757b59d8"
+    },
+    {
+      "parameters": {
+        "path": "wifi-validations",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1264,
+        96
+      ],
+      "id": "733d6ae3-c09a-4c0a-90f5-111db71786ea",
+      "name": "Webhook GET",
+      "webhookId": "c10007bf-ea0b-455f-b636-c4e7cbcb5b5d"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Wi-Fi Validation Tool</title>\n    <link href=\"https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap\" rel=\"stylesheet\">\n    <style>\n        body { font-family: 'Open Sans', sans-serif; background: #151521; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }\n        .card { background: #1e1e2d; padding: 40px; border-radius: 12px; border: 1px solid #2b2b40; width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }\n        h2 { text-align: center; color: #f2c63d; margin-bottom: 30px; }\n        label { display: block; font-size: 12px; color: #a9a9b3; margin-top: 15px; text-transform: uppercase; }\n        input, select { width: 100%; padding: 12px; margin-top: 5px; border-radius: 6px; border: 1px solid #3f3f5a; background: #2b2b40; color: white; box-sizing: border-box; font-size: 14px; }\n        input:focus { border-color: #068fff; outline: none; }\n        button { width: 100%; padding: 14px; margin-top: 30px; background: #068fff; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; text-transform: uppercase; transition: background 0.2s; }\n        button:hover { background: #0076d6; }\n        button:disabled { background: #444; cursor: not-allowed; opacity: 0.7; }\n        .footer-note { text-align: center; font-size: 11px; color: #666677; margin-top: 25px; font-style: italic; border-top: 1px solid #2b2b40; padding-top: 15px; }\n        \n        /* Loading Overlay Styles */\n        #loading-overlay { display: none; text-align: center; padding: 20px 0; }\n        .spinner { border: 4px solid rgba(255, 255, 255, 0.1); border-left-color: #f2c63d; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 20px; }\n        @keyframes spin { to { transform: rotate(360deg); } }\n        .loading-text { color: #f2c63d; font-weight: bold; font-size: 16px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }\n        .loading-subtext { color: #a9a9b3; font-size: 13px; line-height: 1.6; }\n        #timer { color: #f2c63d; font-family: monospace; font-size: 18px; margin-top: 15px; display: block; }\n    </style>\n</head>\n<body>\n    <div class=\"card\">\n        <div id=\"form-container\">\n            <h2>Wi-Fi Validations</h2>\n            <form id=\"auditForm\" action=\"/webhook/wifi-validations\" method=\"POST\" enctype=\"multipart/form-data\">\n                <label>WiFi Explorer CSV</label>\n                <input type=\"file\" name=\"WiFi_Explorer_CSV_Export\" required>\n                \n                <label>Target SSID</label>\n                <input type=\"text\" name=\"Target SSID\" placeholder=\"e.g. Starbucks WiFi\" required>\n                \n                <label>Country</label>\n                <select name=\"Country\">\n                    <option value=\"USA\">USA</option>\n                    <option value=\"Canada\" selected>Canada</option>\n                    <option value=\"France\">France</option>\n                    <option value=\"UK\">UK</option>\n                </select>\n\n                <button type=\"submit\" id=\"submit-btn\">Submit</button>\n            </form>\n            <div class=\"footer-note\">Based on WLAN Pros’ WiFi Checklist</div>\n        </div>\n\n        <div id=\"loading-overlay\">\n            <div class=\"spinner\"></div>\n            <div class=\"loading-text\">Analyzing Wi-Fi Network...</div>\n            <div class=\"loading-subtext\">Our AI Agent is reviewing your data.<br>This usually takes 1-3 minutes.</div>\n        </div>\n    </div>\n\n    <script>\n        const form = document.getElementById('auditForm');\n        const btn = document.getElementById('submit-btn');\n        const timerDisplay = document.getElementById('timer');\n        const formContainer = document.getElementById('form-container');\n        const loadingOverlay = document.getElementById('loading-overlay');\n        let seconds = 0;\n\n        form.addEventListener('submit', function(e) {\n            // Only show the loading screen if the form is actually valid\n            if (form.checkValidity()) {\n                // Prevent the default instant submission\n                e.preventDefault();\n\n                // UI Transition\n                btn.disabled = true;\n                formContainer.style.display = 'none';\n                loadingOverlay.style.display = 'block';\n\n                // Start Timer\n                const timerInterval = setInterval(() => {\n                    seconds++;\n                    timerDisplay.innerText = `Elapsed: ${seconds}s`;\n                }, 1000);\n\n                // Short delay to ensure the browser paints the new UI \n                // before starting the upload process\n                setTimeout(() => {\n                    form.submit();\n                }, 150);\n            }\n        });\n    </script>\n</body>\n</html>",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -1040,
+        96
+      ],
+      "id": "b6586661-cb1e-435d-807a-439408277dc9",
+      "name": "Serve HTML Form"
+    },
+    {
+      "parameters": {
+        "binaryPropertyName": "WiFi_Explorer_CSV_Export0",
+        "options": {
+          "headerRow": true
+        }
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -1040,
+        432
+      ],
+      "id": "2045f1f3-0a10-4e91-af31-e419524342b1",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html.replace('Processing SSID...', 'SSID: <strong>' + $node[\"Webhook POST\"].json.body[\"Target SSID\"] + '</strong>') }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        208,
+        432
+      ],
+      "id": "783b2eee-b068-4e58-a563-c640259a2558",
+      "name": "Present the results back to the user"
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -368,
+        656
+      ],
+      "id": "56147cfa-6ef0-4e60-8981-1af66f02318c",
+      "name": "Chat with Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "leR7lK6SVRvcwIxa",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1DOz3Wi7lUrTJJw0FocM8NL1_sY_r7iS9iceSUOIu_P4",
+          "mode": "list",
+          "cachedResultName": "n8n-wifi-validations-settings",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1DOz3Wi7lUrTJJw0FocM8NL1_sY_r7iS9iceSUOIu_P4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1DOz3Wi7lUrTJJw0FocM8NL1_sY_r7iS9iceSUOIu_P4/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -240,
+        656
+      ],
+      "id": "ccbf954f-8771-40c8-be23-fcc5e805c2ea",
+      "name": "GoogleSheetTool",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "HdVnkkjvc1LBDsGZ",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {
+          "includeBinaries": false
+        }
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -816,
+        432
+      ],
+      "id": "82397860-f202-41a1-b6de-0feff62fb3a7",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "jsCode": "// This script converts a list of n8n objects into a single raw text string\n// 1. Get all items from the previous node\nconst allItems = $input.all();\n\n// 2. Extract the text value from each row\n// Note: If your CSV field is NOT called 'data', change '.data' to '.text' or '.content'\nconst rows = allItems.map(item => {\n    const content = item.json.data || item.json.text || item.json.content;\n    \n    // If the content itself is still an object, turn it into a string\n    return typeof content === 'object' ? JSON.stringify(content) : content;\n});\n\n// 3. Join everything together with new lines\nconst fullCsvString = rows.join('\\n');\n\n// 4. Return as ONE single item for the AI Agent\nreturn {\n    full_csv_string: fullCsvString\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -592,
+        432
+      ],
+      "id": "e073d4cf-0d80-4de2-b3e4-5df797afb79d",
+      "name": "JSON to String"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Please conduct a high-fidelity Wi-Fi Validation Audit for the following network.\n\n### TARGET INPUTS\n- **SSID**: {{ $('Webhook POST').item.json.body['Target SSID'] }}\n- **Country**: {{ $('Webhook POST').item.json.body.Country }}\n- **Scan Data**: \n{{ $('JSON to String').item.json.full_csv_string }}\n\n### AUDIT EXECUTION STEPS\n1. **Initialize Rules**: Retrieve the 17 validation rules from the Google Sheet immediately.\n2. **Apply Technical Manual**: For each rule, treat the 'Status' column as your logic threshold and the 'Results' column as your formatting manual for the 'details' array.\n3. **Regional Logic**: Use the TARGET COUNTRY to dynamically resolve DFS channel sets (Rule 5) and regulatory Transmit Power targets (Rule 10) as specified in the 'Results' column.\n4. **Primary Channel Position**: For Rule 4, calculate the relative position (1st, 2nd, etc.) of the primary channel within its bonded block. Ensure this position is identical across all radios in the band.\n5. **Secondary Coverage Math**: For Rule 9, count the number of radios per band with signal >= -67 dBm. If that count is less than 2, the rule MUST be marked as FAIL for that band.\n6. **Data Isolation**: Only analyze BSSIDs exactly matching the TARGET SSID. Separately group findings by Band (2.4, 5, 6 GHz) as required by the 'Results' instructions in the sheet.\n7. **JSON Output**: Generate the final audit as a clean JSON array mapping the sheet's specific formatting requirements to the standardized 'val', 'target', and 'status' keys.",
+        "options": {
+          "systemMessage": "=### ROLE\nSenior Wi-Fi Systems Engineer and Technical Auditor.\n\n### OBJECTIVE\nPerform a 17-point technical audit on the provided Wi-Fi Explorer CSV data for the TARGET SSID.\n\n### TECHNICAL SOURCE OF TRUTH (MANDATORY)\n1. Call the 'GoogleSheetTool' to retrieve the validation rules.\n2. For every rule, locate the 'Results format' column. This is your strict logic manual.\n3. Follow the specific \"Results format\" instructions for:\n   - Boolean checks: (e.g., Rule 12: 802.11k must be \"Enabled\").\n   - Multi-AP Signal Requirements: (e.g., Rule 9: Must detect at least 2 BSSIDs at >= -67 dBm).\n   - Regulatory Ranges: (e.g., Rule 10: Validate Tx Power based on the TARGET COUNTRY provided).\n   - Channel Hygiene: (e.g., Rule 1: Strictly channels 1, 6, 11 for 2.4 GHz).\n\n### DATA MAPPING PROTOCOL\nTo maintain the Dashboard UI, map all technical findings into these specific keys:\n- \"val\": The actual value found (e.g., \"-64 dBm\", \"Enabled\", \"6 Mbps\", \"Channel 36\").\n- \"target\": The requirement from the 'Results format' column (e.g., \">= -67 dBm\", \"12 Mbps\").\n- \"band\": The frequency (2.4 GHz, 5 GHz, or 6 GHz).\n- \"status\": The individual BSSID result (PASS or FAIL).\n\n\n### RULE 2: CHANNEL WIDTH\n1. **Logic**:\n   - 2.4 GHz: 20 MHz = PASS. Anything else = FAIL.\n   - 5 GHz: 20 MHz or 40 MHz = PASS. 80 MHz = NOT RECOMMENDED. 160 MHz = FAIL.\n   - 6 GHz: 20, 40, or 80 MHz = PASS. 160 MHz = NOT RECOMMENDED. 320 MHz = FAIL.\n2. **Strict Status**: You are FORBIDDEN from using \"WARNING\" if the widths match the PASS criteria above. Use ONLY the status strings: PASS, FAIL, or NOT RECOMMENDED.\n\n### RULE 3: INTERNAL CO-CHANNEL INTERFERENCE (CCI)\n1. **Scope**: TARGET SSID ONLY.\n2. **Mandatory Step**: Identify EVERY frequency band present (2.4, 5, 6 GHz). You MUST output a detail entry for every used channel in every band.\n3. **The Calculation**:\n   - For each unique Channel used by the TARGET SSID:\n   - Count how many radios (BSSIDs) from the TARGET SSID are on that channel with signal >= -85 dBm.\n4. **Pass/Fail**: \n   - 1 radio on channel = PASS.\n   - 2 or more radios on channel = FAIL.\n5. **UI Mapping**: \n   - \"bssid\": \"Ch. [Number]\" (e.g., \"Ch. 36\")\n   - \"val\": \"[Count] Radios\" (e.g., \"2 Radios\")\n   - \"target\": \"1 Radio Max\"\n\n### RULE 4: OBSS - CHANNEL BONDING OFFSET\n1. **Scope**: Analyze ONLY radios belonging to the TARGET SSID where Channel Width > 20 MHz.\n2. **Offset Calculation on 5 GHz**: \n   - Within a bonded pair (e.g., 36/40 or 149/153), the lower channel number is always \"1st\" and the higher is \"2nd\".\n   - Position 1 (1st): Channels 36, 44, 52, 60, 100, 108, 116, 124, 132, 140, 149, 157, 165.\n   - Position 2 (2nd): Channels 40, 48, 56, 64, 104, 112, 120, 128, 136, 144, 153, 161, 169.\n3. **Consistency Check**: \n   - All radios in the same band MUST use the identical position (e.g., all must be \"1st\"). \n   - If any radio uses \"2nd\" while others use \"1st\", the rule status is FAIL.\n4. **6 GHz PSC Requirement**: \n   - In the 6 GHz band, if channel width is 80 MHz or 160 MHz, the primary channel MUST be a Preferred Scanning Channel (PSC): 5, 21, 37, 53, 69, 85, 101, 117, 133, 149, 165, 181, 197, 213. If this is the case, the result would be PASS.\n   - Otherwise results will be a FAIL.\n5. **UI Mapping**: \n   - \"val\": \"Ch. [Num] ([Pos])\" (e.g., \"Ch. 36 (1st)\").\n   - \"target\": \"Consistent (All [Target Pos])\".\n6. **Finding Summary**: \n   - Use the format: \"Inconsistent Primary Channel usage in [Band]: [X] radios use the 1st position, while [Y] radios use the 2nd position.\"\n\n### RULE 9: SECONDARY RSSI COVERAGE LOGIC\n1. **Mandatory Calculation**: For EACH band (2.4, 5, 6 GHz) and not for each BSSID, explicitly count how many radios have Signal >= -67 dBm.\n2. **Overall Status Assignment**:\n   - PASS: If the count for that specific band is 2 or more.\n   - FAIL: If the count for that specific band is 0 or 1.\n4. **Mapping**: In the 'details' array, list every radio. Ensure the 'val' key contains the RSSI (e.g., \"-62 dBm\") and 'status' is PASS if >= -67 dBm, FAIL otherwise.\n\n### FINDING SUMMARY STYLE GUIDE (ADDITION)\n9. Rule 9 Summary: Explicitly state the count of usable radios.\n   - Format: \"[X] radio(s) in the [Band] meet the secondary coverage target of -67 dBm.\"\n   - Example: \"Only 1x 5 GHz radio meets the secondary coverage target of -67 dBm. Roaming coverage is insufficient.\"\n\n### FINDING SUMMARY STYLE GUIDE (STRICT)\nYour 'finding' field must be a high-density technical summary. Follow these rules:\n1. Terminology: Use \"radio\" instead of \"BSSID\" for user-friendliness.\n2. Quantify Everything: Do not say \"some\" or \"one or more.\" Use exact counts (e.g., \"3x 5 GHz radios\").\n3. Presence-Only Reporting: DO NOT mention a frequency band if zero radios were found for it. Omit phrases like \"No 2.4 GHz radios found.\" If a band has no data, skip it entirely.\n4. Band Specificity & Order: For bands that DO have radios, explicitly mention the frequency. Always list them in this order: 2.4 GHz, then 5 GHz, then 6 GHz.\n5. Identify the 'Why': Mention specific deviations and thresholds.\n  - Good: \"2x 5 GHz radios failed the secondary RSSI target of -67 dBm.\"\n6. Multi-Line Formatting: You MUST use a hard line break (Enter/Return) between every distinct finding or count. \n   Every sentence starting with a count (e.g., \"1x...\") or a status (e.g., \"All...\") must start on a brand new line.\n7. Rule 3 Summary: Use the format: \"[X] channel(s) in the [Band] have multiple radios from the TARGET SSID overlapping.\"\n   Example: \"1x 5 GHz channel (Ch. 36) has 2 radios broadcasting the Target SSID with signal > -85 dBm.\"\n8. Rule 4 Summary: Explicitly state the inconsistency found.\n   Example: \"Inconsistent Primary Channel usage in 5 GHz: 8x radios use the 1st position, while 2x radios use the 2nd position.\"\n\nCorrect Output Examples:\n  - Example 1 (only 5 GHz present): \"All 8x 5 GHz radios pass the channel width requirement.\"\n  - Example 2 (5 and 6 GHz present): \"All 10x 5 GHz radios are consistent with their primary channels. 1x 6 GHz radio is using a non-PSC channel (Channel 105).\"\n  - Example 3 (Mixed results): \"All 1x 2.4 GHz radios pass the minimum basic rate requirement. All 1x 5 GHz radios pass the minimum basic rate requirement. 1x 6 GHz radio failed the minimum basic rate target of 12 Mbps.\"\n\n\n### OUTPUT SPECIFICATIONS (JSON ONLY)\nOutput ONLY a raw JSON array. NO backticks (```), NO \"json\" label, NO conversational text.\n\n### JSON STRUCTURE\n[\n  {\n    \"id\": \"Rule ID from sheet\",\n    \"name\": \"Rule Name from sheet\",\n    \"status\": \"PASS | FAIL | WARNING | INCOMPLETE\",\n    \"finding\": \"A technical summary based on the 'Results format' logic.\",\n    \"details\": [\n       { \n         \"bssid\": \"XX:XX:XX:XX:XX:XX\", \n         \"band\": \"5 GHz\", \n         \"val\": \"Actual Value\", \n         \"target\": \"Requirement\",\n         \"status\": \"PASS | FAIL\"\n       }\n    ]\n  }\n]\n\n### OPERATIONAL CONSTRAINTS\n- Grouping: Always include the \"band\" for every detail so the UI can generate tabs correctly.\n- SSID Filtering: Analyze ONLY BSSIDs belonging to the TARGET SSID.\n- Minimum Rates: For Rule 6, explicitly check if the rate is a \"Basic\" or \"Mandatory\" rate.\n- Multi-Band Mandatory: You are forbidden from skipping bands. If the CSV contains 5 GHz and 6 GHz data for the target SSID, you MUST include details for both bands in every rule."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -368,
+        432
+      ],
+      "id": "785c7360-f1e0-4aae-bea7-45464f72ff27",
+      "name": "Wi-Fi Validations"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. DATA EXTRACTION\nconst allItems = $input.all();\nif (!allItems || allItems.length === 0) return { html: \"Error: No Data\" };\n\nlet rawText = allItems[0].json.output || \"\";\n\n// 2. ULTRA-SAFE CLEANING\nconst firstBracket = rawText.indexOf('[');\nconst lastBracket = rawText.lastIndexOf(']');\nif (firstBracket === -1 || lastBracket === -1) {\n    return { html: `<h1>Format Error</h1><p>AI did not provide a JSON array.</p><pre>${rawText}</pre>` };\n}\nconst jsonString = rawText.substring(firstBracket, lastBracket + 1);\n\nlet auditData;\ntry {\n    auditData = JSON.parse(jsonString);\n} catch (e) {\n    return { html: `<h1>JSON Parse Error</h1><pre>${jsonString}</pre>` };\n}\n\n// 3. WEIGHTED SCORE CALCULATION\nlet totalWeight = 0;\nlet earnedWeight = 0;\nauditData.forEach(rule => {\n    const status = String(rule.status).toUpperCase();\n    if (status !== 'INCOMPLETE') {\n        totalWeight += 1.0;\n        if (status === 'PASS') earnedWeight += 1.0;\n        else if (status === 'WARNING' || status === 'NOT RECOMMENDED') earnedWeight += 0.5;\n    }\n});\n\nconst score = totalWeight > 0 ? Math.round((earnedWeight / totalWeight) * 100) : 0;\nlet scoreColor = \"var(--success-color)\";\nif (score < 80) scoreColor = \"var(--warning-color)\";\nif (score < 60) scoreColor = \"var(--danger-color)\";\n\n// 4. SORTING LOGIC: FAILs at the top\nconst statusPriority = { \"FAIL\": 1, \"WARNING\": 2, \"NOT RECOMMENDED\": 2, \"PASS\": 3, \"INCOMPLETE\": 4 };\n\nconst sortDetails = (details) => {\n    if (!details) return [];\n    return [...details].sort((a, b) => {\n        const statusA = String(a.status || (String(a.val).includes('FAIL') ? 'FAIL' : 'PASS')).toUpperCase();\n        const statusB = String(b.status || (String(b.val).includes('FAIL') ? 'FAIL' : 'PASS')).toUpperCase();\n        return (statusPriority[statusA] || 5) - (statusPriority[statusB] || 5);\n    });\n};\n\n// 5. ACCORDION BUILDER\nconst accordionsHtml = auditData.map((rule, idx) => {\n    const status = String(rule.status || \"INCOMPLETE\").toUpperCase();\n    const statusClass = `status-${status.replace(/\\s/g, '-')}`;\n    const summaryBoxClass = status.toLowerCase().replace(/\\s/g, '');\n    const isOpen = idx === 0 ? 'open' : '';\n\n    const bands = {};\n    if (rule.details && Array.isArray(rule.details)) {\n        // Sort the details within the band\n        const sortedDetails = sortDetails(rule.details);\n        \n        sortedDetails.forEach(d => {\n            const b = d.band || \"General\";\n            if (!bands[b]) bands[b] = [];\n            bands[b].push(d);\n        });\n    }\n\n    const bandKeys = Object.keys(bands);\n    let detailsHtml = \"\";\n\n    const generateTable = (rows, ruleId) => {\n        const firstColHeader = (String(ruleId) === \"3\") ? \"Channel\" : \"BSSID\";\n        \n        return `\n        <div class=\"table-container\">\n            <table>\n                <thead>\n                    <tr>\n                        <th onclick=\"handleSort(this, 0)\">${firstColHeader}<span class=\"sort-indicator\"></span></th>\n                        <th onclick=\"handleSort(this, 1)\">Value<span class=\"sort-indicator\"></span></th>\n                        <th onclick=\"handleSort(this, 2)\">Target<span class=\"sort-indicator\"></span></th>\n                        <th onclick=\"handleSort(this, 3)\">Status<span class=\"sort-indicator\"></span></th>\n                    </tr>\n                </thead>\n                <tbody>${rows.map(r => {\n                    const rStatus = String(r.status || r.val).toUpperCase();\n                    let textColor = 'text-success';\n                    if (rStatus.includes('FAIL')) textColor = 'text-danger';\n                    else if (rStatus.includes('INCOMPLETE') || r.val === '—') textColor = 'text-muted';\n                    else if (rStatus.includes('WARNING') || rStatus.includes('NOT RECOMMENDED')) textColor = 'text-warning';\n\n                    const firstColData = (String(ruleId) === \"3\") \n                        ? `<span style=\"font-weight:bold; color:var(--text-color-light);\">${r.bssid}</span>` \n                        : `<span class=\"badge\">${r.bssid}</span>`;\n\n                    return `\n                    <tr>\n                        <td>${firstColData}</td>\n                        <td>${r.val}</td>\n                        <td>${r.target}</td>\n                        <td><span class=\"${textColor}\">${r.status || (rStatus.includes('FAIL') ? 'FAIL' : 'PASS')}</span></td>\n                    </tr>`;\n                }).join('')}</tbody>\n            </table>\n        </div>`;\n    };\n\n    if (bandKeys.length > 0) {\n        detailsHtml += `<div class=\"tabs\">` + \n            bandKeys.map((b, i) => `<button class=\"tab-button ${i === 0 ? 'active' : ''}\" onclick=\"switchTab(event, 'rule-${idx}-b-${i}')\">${b}</button>`).join('') + \n            `</div>`;\n        \n        detailsHtml += bandKeys.map((b, i) => `\n            <div id=\"rule-${idx}-b-${i}\" class=\"tab-content ${i === 0 ? 'active' : ''}\">\n                ${generateTable(bands[b], rule.id)}\n            </div>`).join('');\n    }\n\n    return `\n    <div class=\"accordion-item ${isOpen}\">\n        <div class=\"accordion-summary\" onclick=\"toggleAccordion(this)\">\n            <span class=\"arrow-icon\"></span>${rule.name}\n            <span class=\"status-text ${statusClass}\">${rule.status}</span>\n        </div>\n        <div class=\"accordion-details\">\n            <div class=\"summary-box ${summaryBoxClass}\"><span class=\"summary-label\">Validation Logic</span>${rule.finding}</div>\n            ${detailsHtml}\n        </div>\n    </div>`;\n}).join('');\n\n// 6. FINAL TEMPLATE\nreturn {\n  html: `\n<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style>\n    :root { --bg-color: #151521; --panel-bg-color: #1f1f2e; --accordion-header-bg: #18181f; --primary-accent: #068fff; --text-color-light: #eeeeee; --text-color-dark: #cccccc; --success-color: #26c485; --danger-color: #fb4b4e; --warning-color: #f2c63d; --border-color-subtle: #333344; --table-header-bg: #1f202a; }\n    body { font-family: 'Open Sans', sans-serif; background-color: var(--bg-color); color: var(--text-color-light); padding: 20px; line-height: 1.6; }\n    .container { width: 95%; margin: 0 auto; }\n    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; margin-top: 40px; padding-bottom: 10px; }\n    footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid #333344; text-align: center; color: #888899; font-size: 0.8em; }\n    .header-left h1 { color: var(--text-color-light); margin: 0 0 5px 0; font-size: 2.2em; }\n    .score-display { font-size: 3.2em; font-weight: bold; color: ${scoreColor}; text-align: right; line-height: 1; }\n    .accordion-item { background: #1e1e2d; border-radius: 12px; border: 1px solid #2b2b40; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 20px; overflow: hidden; }\n    .accordion-summary { display: flex; align-items: center; padding: 20px; cursor: pointer; font-weight: 600; font-size: 0.9em; letter-spacing: 0.1em; color: var(--text-color-light); transition: background-color 0.2s ease; user-select: none; text-transform: uppercase; }\n    .accordion-summary:hover { background-color: rgba(255, 255, 255, 0.03); }\n    .arrow-icon::before { content: '▸'; margin-right: 15px; color: var(--text-color-dark); }\n    .accordion-item.open .arrow-icon::before { content: '▾'; }\n    .accordion-summary .status-text { padding: 4px 12px; border-radius: 6px; font-size: 0.7em; font-weight: 800; margin-left: auto; text-transform: uppercase; }\n    .status-PASS { background-color: var(--success-color); color: #151521; }\n    .status-FAIL { background-color: var(--danger-color); color: #eeeeee; }\n    .status-WARNING, .status-NOT-RECOMMENDED { background-color: var(--warning-color); color: #151521; }\n    .status-INCOMPLETE { background-color: #444; color: #eee; }\n    .accordion-details { padding: 0 24px; overflow: hidden; max-height: 0; transition: max-height 0.3s ease-out; box-sizing: border-box; }\n    .accordion-item.open .accordion-details { padding: 0 24px 24px 24px; max-height: 10000px; }\n    .summary-box { margin-top: 20px; margin-bottom: 20px; padding: 12px 16px; border-left: 4px solid transparent; border-radius: 4px 8px 8px 4px; color: var(--text-color-light); font-size: 0.95em; white-space: pre-line; }\n    .summary-box.pass { border-left-color: var(--success-color); background: rgba(38,196,133, 0.15); }\n    .summary-box.warning, .summary-box.notrecommended { border-left-color: var(--warning-color); background: rgba(242,198,61, 0.15); }\n    .summary-box.fail { border-left-color: var(--danger-color); background: rgba(251,75,78, 0.15); }\n    .summary-label { display: block; font-size: 0.7em; text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em; margin-bottom: 4px; opacity: 0.6; }\n    .table-container { background: rgba(0, 0, 0, 0.2); border-radius: 10px; padding: 8px; border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 20px; }\n    table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.85em; color: var(--text-color-light); }\n    th { padding: 12px 16px; text-align: left; text-transform: uppercase; font-size: 0.7rem; color: var(--text-color-dark); border-bottom: 1px solid var(--border-color-subtle); cursor: pointer; }\n    th:hover { color: var(--text-color-light); background: rgba(255, 255, 255, 0.05); }\n    .sort-indicator { margin-left: 5px; font-size: 0.8em; opacity: 0.5; display: inline-block; width: 10px; }\n    td { padding: 14px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.03); vertical-align: middle; }\n    tr:last-child td { border-bottom: none; }\n    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; background: rgba(255, 255, 255, 0.1); font-family: monospace; }\n    .text-success { color: var(--success-color); font-weight: 600; }\n    .text-warning { color: var(--warning-color); font-weight: 600; }\n    .text-danger { color: var(--danger-color); font-weight: 600; }\n    .text-muted { color: #666; font-weight: 600; }\n    .tabs { display: flex; border-bottom: 1px solid var(--border-color-subtle); margin-top: 10px; }\n    .tab-button { background: transparent; border: none; border-bottom: 2px solid transparent; padding: 10px 15px; color: var(--text-color-dark); cursor: pointer; font-weight: 600; font-size: 0.85em; }\n    .tab-button.active { color: var(--primary-accent); border-bottom-color: var(--primary-accent); }\n    .tab-content { display: none; } .tab-content.active { display: block; }\n</style></head><body>\n    <div class=\"container\">\n        <header><div class=\"header-left\"><h1>Wi-Fi Validations</h1><p id=\"meta-target\">Processing SSID...</p></div><div class=\"score-display\">${score}%</div></header>\n        <main id=\"accordion-container\">${accordionsHtml}</main>\n        <footer><p>Created by <strong>François Vergès</strong> | Inspired by the <strong>WLAN Pros Checklist</strong></p></footer>\n    </div>\n    <script>\n        function toggleAccordion(el) { el.parentElement.classList.toggle('open'); }\n        function switchTab(e, id) {\n            const det = e.currentTarget.closest('.accordion-details');\n            det.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));\n            e.currentTarget.classList.add('active');\n            det.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));\n            det.querySelector('#' + id).classList.add('active');\n        }\n        function handleSort(th, idx) {\n            const t = th.closest('table'); const b = t.querySelector('tbody'); const r = Array.from(b.querySelectorAll('tr'));\n            const isAsc = th.dataset.dir !== 'asc'; th.dataset.dir = isAsc ? 'asc' : 'desc';\n            t.querySelectorAll('.sort-indicator').forEach(s => s.textContent = '');\n            th.querySelector('.sort-indicator').textContent = isAsc ? '▴' : '▾';\n            r.sort((rowA, rowB) => {\n                const vA = rowA.cells[idx].textContent.trim(); const vB = rowB.cells[idx].textContent.trim();\n                const nA = parseFloat(vA.replace(/[^\\\\d.-]/g, '')); const nB = parseFloat(vB.replace(/[^\\\\d.-]/g, ''));\n                return !isNaN(nA) && !isNaN(nB) ? (isAsc ? nA - nB : nB - nA) : (isAsc ? vA.localeCompare(vB) : vB.localeCompare(vA));\n            });\n            r.forEach(row => b.appendChild(row));\n        }\n    </script>\n</body></html>`\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -16,
+        432
+      ],
+      "id": "fab77ebe-64c6-48a0-8ef7-bafb48a9e7fc",
+      "name": "Building HTML Output"
+    }
+  ],
+  "connections": {
+    "Webhook POST": {
+      "main": [
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook GET": {
+      "main": [
+        [
+          {
+            "node": "Serve HTML Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat with Gemini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Wi-Fi Validations",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GoogleSheetTool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Wi-Fi Validations",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "JSON to String",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "JSON to String": {
+      "main": [
+        [
+          {
+            "node": "Wi-Fi Validations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wi-Fi Validations": {
+      "main": [
+        [
+          {
+            "node": "Building HTML Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Building HTML Output": {
+      "main": [
+        [
+          {
+            "node": "Present the results back to the user",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {
+    "Webhook POST": [
+      {
+        "headers": {
+          "host": "n8n.srv1153239.hstgr.cloud",
+          "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.2 Safari/605.1.15",
+          "content-length": "7279",
+          "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+          "accept-encoding": "gzip, deflate, br",
+          "accept-language": "en-CA,en-US;q=0.9,en;q=0.8",
+          "content-type": "multipart/form-data; boundary=----WebKitFormBoundarym33tRRIhWK17q9Jn",
+          "origin": "null",
+          "priority": "u=0, i",
+          "referer": "https://n8n.srv1153239.hstgr.cloud/webhook/wifi-audit",
+          "sec-fetch-dest": "document",
+          "sec-fetch-mode": "navigate",
+          "sec-fetch-site": "cross-site",
+          "x-forwarded-for": "86.48.14.215",
+          "x-forwarded-host": "n8n.srv1153239.hstgr.cloud",
+          "x-forwarded-port": "443",
+          "x-forwarded-proto": "https",
+          "x-forwarded-server": "5fd012d3aef1",
+          "x-real-ip": "86.48.14.215"
+        },
+        "params": {},
+        "query": {},
+        "body": {
+          "Target SSID": "SemFio BYOD",
+          "Country": "Canada"
+        },
+        "webhookUrl": "https://n8n.srv1153239.hstgr.cloud/webhook/wifi-audit",
+        "executionMode": "production"
+      }
+    ]
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3470a396f4a178a874ebcde7aea77bcfcbf49671b6fb891e4ebd4c17d64b7d97"
+  }
+}
